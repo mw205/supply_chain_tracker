@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+pydantic-settings
+python-dotenv
+python-jose[cryptography] # For potential JWT auth later
+passlib[bcrypt]         # For hashing passwords if users are added
+psycopg2-binary         # If using PostgreSQL, otherwise remove/comment
+# For SQLite, no extra driver is usually needed beyond Python's built-in sqlite3

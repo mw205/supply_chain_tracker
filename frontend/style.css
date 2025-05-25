@@ -1,0 +1,314 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+.container {
+    max-width: 960px;
+    margin: auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2,
+h3 {
+    color: #0056b3;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2.2em;
+}
+
+h2 {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 8px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+h3 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+}
+
+section {
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 40px 0;
+}
+
+.form-container,
+.list-container {
+    background: #fdfdfd;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #eef;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="hidden"],
+textarea,
+select {
+    width: calc(100% - 22px);
+    /* Full width minus padding */
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    margin-right: 8px;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0px);
+}
+
+button[type="button"] {
+    background-color: #6c757d;
+}
+
+button[type="button"]:hover {
+    background-color: #545b62;
+}
+
+
+#productList {
+    list-style: none;
+    padding: 0;
+}
+
+#productList li {
+    background: #e9f7fd;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border-left: 4px solid #007bff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#productList li .actions button {
+    margin-left: 8px;
+    padding: 6px 10px;
+    font-size: 0.9em;
+}
+
+#historyOutput ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#historyOutput li {
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+#historyOutput li strong {
+    color: #0056b3;
+}
+
+#historyOutput li pre {
+    background-color: #e9ecef;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #ced4da;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 0.9em;
+}
+
+.error-message {
+    color: #dc3545;
+    /* Bootstrap danger color */
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+}
+
+/* Blockchain Visual Chain & Detail Styles */
+#blockchainOverallStatus {
+    background-color: #f0f8ff;
+    /* Alice blue for light distinction */
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #d1e7fd;
+}
+
+#blockchainOverallStatus ul {
+    padding-left: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.chain-container {
+    display: flex;
+    /* Arrange blocks horizontally */
+    flex-wrap: nowrap;
+    /* Prevent wrapping by default, allow scrolling */
+    overflow-x: auto;
+    /* Allow horizontal scrolling for many blocks */
+    padding: 15px 10px;
+    margin-bottom: 20px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    min-height: 100px;
+    /* Ensure it has some height */
+    align-items: flex-start;
+    /* Align blocks to the top if they have different heights */
+    border: 1px solid #ced4da;
+}
+
+.block-visual {
+    flex-shrink: 0;
+    /* Prevent blocks from shrinking if space is tight */
+    border: 2px solid #007bff;
+    background-color: #ffffff;
+    padding: 12px 18px;
+    margin-right: 15px;
+    /* Space between blocks */
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    min-width: 130px;
+    max-width: 180px;
+    /* Max width before text wraps too much */
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.block-visual:last-child {
+    margin-right: 0;
+    /* No margin for the last block */
+}
+
+.block-visual:hover,
+.block-visual.selected {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.block-visual.selected {
+    border-color: #0056b3;
+    /* Darker border for selected */
+}
+
+
+.block-visual .block-index {
+    font-weight: bold;
+    font-size: 1.15em;
+    color: #0056b3;
+    /* Darker blue */
+    margin-bottom: 5px;
+}
+
+.block-visual .block-hash-preview {
+    font-size: 0.8em;
+    color: #495057;
+    /* Gray */
+    word-break: break-all;
+    /* If hash preview is still too long */
+}
+
+.block-detail-container {
+    margin-top: 10px;
+    /* Reduced margin as there's an H3 now */
+    padding: 20px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Styling for definition list in block details */
+.block-detail-container dl {
+    margin: 0;
+}
+
+.block-detail-container dt {
+    font-weight: bold;
+    color: #343a40;
+    margin-top: 12px;
+}
+
+.block-detail-container dt:first-of-type {
+    margin-top: 0;
+}
+
+.block-detail-container dd {
+    margin-left: 0;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    word-break: break-all;
+    /* Ensure long strings like hashes wrap */
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.block-detail-container dd pre {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    white-space: pre-wrap;
+    font-family: inherit;
+}

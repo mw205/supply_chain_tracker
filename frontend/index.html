@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Supply Chain Tracker</h1>
+
+        <section id="product-management">
+            <h2>Product Management</h2>
+            <div class="form-container">
+                <h3>Add/Update Product</h3>
+                <form id="productForm">
+                    <input type="hidden" id="productId" name="productId">
+                    <label for="productName">Name:</label>
+                    <input type="text" id="productName" name="productName" required>
+
+                    <label for="productSku">SKU:</label>
+                    <input type="text" id="productSku" name="productSku" required>
+
+                    <label for="productDescription">Description:</label>
+                    <textarea id="productDescription" name="productDescription"></textarea>
+
+                    <label for="productManufacturer">Manufacturer:</label>
+                    <input type="text" id="productManufacturer" name="productManufacturer">
+
+                    <button type="submit">Save Product</button>
+                    <button type="button" id="clearProductFormBtn">Clear Form</button>
+                </form>
+            </div>
+
+            <div class="list-container">
+                <h3>Product List</h3>
+                <button id="loadProductsBtn">Load Products</button>
+                <ul id="productList">
+                </ul>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="event-recording">
+            <h2>Record Supply Chain Event</h2>
+            <div class="form-container">
+                <form id="eventForm">
+                    <label for="eventProductId">Product ID (from list above):</label>
+                    <input type="number" id="eventProductId" name="eventProductId" required>
+
+                    <label for="eventType">Event Type:</label>
+                    <select id="eventType" name="eventType">
+                        <option value="CREATED">Product Created</option>
+                        <option value="PACKAGED">Packaged</option>
+                        <option value="SHIPPED">Shipped</option>
+                        <option value="IN_TRANSIT">In Transit</option>
+                        <option value="RECEIVED">Received</option>
+                        <option value="INSPECTED">Inspected</option>
+                        <option value="STORED">Stored</option>
+                        <option value="DELIVERED">Delivered to Customer</option>
+                    </select>
+
+                    <label for="eventLocation">Location:</label>
+                    <input type="text" id="eventLocation" name="eventLocation">
+
+                    <label for="eventActor">Actor/Responsible Party:</label>
+                    <select id="eventActor" name="eventActor">
+                        <option value="">-- Select Actor --</option>
+                        <option value="Supplier">Supplier</option>
+                        <option value="Manufacturer">Manufacturer</option>
+                        <option value="Logistics Partner">Logistics Partner</option>
+                        <option value="Warehouse Operator">Warehouse Operator</option>
+                        <option value="Quality Inspector">Quality Inspector</option>
+                        <option value="Customs Authority">Customs Authority</option>
+                        <option value="Retailer">Retailer</option>
+                        <option value="System Automated">System (Automated Event)</option>
+                    </select>
+
+                    <label for="eventNotes">Notes:</label>
+                    <textarea id="eventNotes" name="eventNotes"></textarea>
+
+                    <button type="submit">Record Event</button>
+                </form>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="product-history">
+            <h2>Product Event History (Blockchain Verified)</h2>
+            <div class="form-container">
+                <form id="historyForm">
+                    <label for="historyProductId">Product ID to View History:</label>
+                    <input type="number" id="historyProductId" name="historyProductId" required>
+                    <button type="submit">View History</button>
+                </form>
+            </div>
+            <div id="historyOutput">
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="blockchain-info">
+            <h2>Blockchain Status</h2>
+            <button id="loadBlockchainInfoBtn">Load Blockchain Info</button>
+
+            <div id="blockchainOverallStatus">
+            </div>
+
+            <h3>Blockchain Visual Chain</h3>
+            <div id="blockchainChainView" class="chain-container">
+                <p>Load blockchain info to see the chain.</p>
+            </div>
+
+            <h3>Selected Block Details</h3>
+            <div id="blockchainDetailView" class="block-detail-container">
+                <p>Click on a block in the chain above to see its details.</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
