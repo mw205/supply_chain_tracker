@@ -1,7 +1,7 @@
 import datetime
 from typing import Any, List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 # --- Product Schemas ---
@@ -51,3 +51,37 @@ class BlockchainInfo(BaseModel):
     is_valid: bool
     difficulty: int
     chain_length: int
+
+class UserBase(BaseModel):
+    username: str
+    email: Optional[EmailStr] = None
+    full_name: Optional[str] = None
+
+class UserCreate(UserBase):
+    password: str # Plain password, will be hashed by the backend
+
+class UserUpdate(UserBase):
+    password: Optional[str] = None
+
+class UserInDBBase(UserBase):
+    id: int
+    is_active: bool
+
+    class Config:
+        from_attributes = True # Pydantic v2
+        # orm_mode = True # Pydantic v1
+
+class User(UserInDBBase): # Schema for returning user data (without password)
+    pass
+
+class UserInDB(UserInDBBase): # Schema for user data stored in DB (with hashed_password)
+    hashed_password: str
+
+
+# --- Token Schemas ---
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None

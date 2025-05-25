@@ -1,14 +1,16 @@
-import datetime  # For timestamping events before adding to blockchain
-from typing import List
+import datetime
+from typing import Annotated, List  # Add Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session  # To get product details if needed
+from fastapi import (APIRouter, Depends,  # Ensure Depends is imported
+                     HTTPException, status)
+from sqlalchemy.orm import Session
 
-from blockchain.core import Blockchain  # Adjusted import path
+from blockchain.core import Blockchain
 
-from .. import crud, schemas  # For fetching product details
-from ..database import get_db
+from .. import crud, models, schemas  # Added models
 from ..config import settings
+from ..database import get_db
+from ..dependencies import get_current_active_user
 
 router = APIRouter(
     prefix="/events",
@@ -22,26 +24,34 @@ router = APIRouter(
 supply_chain_blockchain = Blockchain(difficulty=settings.BLOCKCHAIN_DIFFICULTY) # New way
 
 @router.post("/record", status_code=status.HTTP_201_CREATED)
-def record_supply_chain_event(event_data: schemas.BlockchainEventCreate, db: Session = Depends(get_db)):
-    # 1. Validate product_id (optional, but good practice)
-    product = crud.get_product(db, product_id=event_data.product_id)
+def record_supply_chain_event(
+    event_data_in: schemas.BlockchainEventCreate, # Renamed to avoid conflict
+    db: Annotated[Session, Depends(get_db)],
+    _current_user: Annotated[models.User, Depends(get_current_active_user)] # Add dependency
+):
+    product = crud.get_product(db, product_id=event_data_in.product_id)
     if not product:
-        raise HTTPException(status_code=404, detail=f"Product with ID {event_data.product_id} not found.")
+        raise HTTPException(
+            status_code=404,
+            detail=f"Product with ID {event_data_in.product_id} not found."
+        )
 
-    # 2. Prepare data for the blockchain
-    #    Ensure event_data.timestamp is set if not provided by client
-    if event_data.timestamp is None:
-        event_data.timestamp = datetime.datetime.utcnow()
-    
-    # Convert Pydantic model to dict to store in blockchain
-    # Ensure datetime is serialized to string if not handled by json.dumps in Block
-    event_payload = event_data.model_dump()
-    event_payload["timestamp"] = event_payload["timestamp"].isoformat()
+    # You can augment event_data with current_user info if your schema allows
+    # For example, if BlockchainEventData had a 'recorded_by_user_id' field.
+    # Or, you can modify the 'actor' field based on the user if that makes sense.
+    # For now, we'll just use current_user for protection.
+    # print(f"Event recorded by: {current_user.username}")
 
+    event_payload = event_data_in.model_dump()
+    if event_data_in.timestamp is None:
+        event_payload["timestamp"] = datetime.datetime.utcnow().isoformat()
+    else:
+        event_payload["timestamp"] = event_data_in.timestamp.isoformat()
 
-    # 3. Add event to the blockchain
+    # Add who recorded the event, if desired and schema supports
+    # event_payload["recorded_by"] = current_user.username
+
     try:
-        # The add_block method in our Blockchain class handles mining
         new_block = supply_chain_blockchain.add_block(event_payload)
         return {
             "message": "Event recorded on the blockchain successfully.",
@@ -50,8 +60,10 @@ def record_supply_chain_event(event_data: schemas.BlockchainEventCreate, db: Ses
             "event_data": new_block.data
         }
     except Exception as e:
-        # Basic error handling
-        raise HTTPException(status_code=500, detail=f"Failed to record event on blockchain: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to record event on blockchain: {str(e)}"
+        ) from e
 
 
 @router.get("/history/{product_id}", response_model=List[schemas.BlockData])
@@ -59,7 +71,8 @@ def get_product_event_history(product_id: int, db: Session = Depends(get_db)):
     # Validate product_id (optional)
     product = crud.get_product(db, product_id=product_id)
     if not product:
-        raise HTTPException(status_code=404, detail=f"Product with ID {product_id} not found for history lookup.")
+        raise HTTPException(status_code=404,
+                            detail=f"Product with ID {product_id} not found for history lookup.")
 
     # Filter blockchain for events related to this product_id
     product_history = []
@@ -77,11 +90,11 @@ def get_product_event_history(product_id: int, db: Session = Depends(get_db)):
                 nonce=block.nonce
             )
             product_history.append(block_info)
-    
+
     if not product_history:
-         # Return empty list if no history, or 404 if preferred
-        return [] # Or raise HTTPException(status_code=404, detail=f"No blockchain events found for product ID {product_id}")
-    
+        # Return empty list if no history, or 404 if preferred
+        return []   # Or raise HTTPException(status_code=404,
+                    #detail=f"No blockchain events found for product ID {product_id}")
     return product_history
 
 @router.get("/blockchain/info", response_model=schemas.BlockchainInfo)
