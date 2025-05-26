@@ -15,6 +15,7 @@ The system allows for the creation and management of products (stored off-chain 
 * **RESTful API:** FastAPI backend provides endpoints for all operations.
 * **Integrated Web Interface:** Basic frontend served directly by FastAPI for interacting with the system.
 * **Configurable Settings:** Uses a `.env` file for database URL and blockchain difficulty.
+* **User Authentication & Roles:** Secure login and JWT-based authentication using FastAPI, python-jose, passlib, and email-validator.
 
 ## Technology Stack
 
@@ -129,6 +130,10 @@ sqlalchemy
 pydantic
 python-dotenv
 pydantic-settings
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
+email-validator
 # psycopg2-binary # Uncomment or add if you plan to use PostgreSQL
 ```
 
